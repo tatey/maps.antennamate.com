@@ -3,5 +3,12 @@ source: 'app'
 destination: 'dist'
 plugins: 'plugins'
 
+# Don't copy these files into the destination.
+exclude: ['assets']
+
 # Allow plugins that would be disabled on GitHub
 safe: false
+
+assets:
+  # Source assets from these directories.
+  sources: ['assets/javascripts']

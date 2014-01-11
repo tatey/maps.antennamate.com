@@ -6,8 +6,11 @@
 <head>
   <meta charset="utf-8">
   <title>antennamate.com</title>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
   <script type="text/javascript" src="{% asset_path application.js %}"></script>
+  <link rel="stylesheet" type="text/css" href="{% asset_path application.css %}"/>
 </head>
-<body>
+<body ng-app="app">
+  <div am-google-map class="map"></div>
 </body>
 </html>

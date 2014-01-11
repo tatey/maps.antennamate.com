@@ -1,1 +1,3 @@
 require 'jekyll-assets'
+
+Sprockets.append_path File.expand_path('../../vendor/assets/javascripts', __FILE__)

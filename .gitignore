@@ -1,2 +1,5 @@
 # Ignore the build directory.
 /dist
+
+# Ignore the temp directory.
+/tmp

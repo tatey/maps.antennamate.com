@@ -10,5 +10,8 @@ exclude: ['assets']
 safe: false
 
 assets:
+  # Decrease build time by caching between compilations.
+  cache: '../tmp/assets'
+
   # Source assets from these directories.
   sources: ['assets/javascripts', 'assets/stylesheets']

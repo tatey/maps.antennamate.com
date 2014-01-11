@@ -1,0 +1,7 @@
+# Directories
+source: 'app'
+destination: 'dist'
+plugins: 'plugins'
+
+# Allow plugins that would be disabled on GitHub
+safe: false

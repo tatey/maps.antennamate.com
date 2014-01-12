@@ -19,9 +19,9 @@
           <span ng-bind="site.area_served"></span>
         </div>
       </div>
-      <div class="col-md-9" ng-controller="MapController as Ctrl">
-        <div class="map" google-map center="Ctrl.location.center">
-          <div google-marker position="marker.position" ng-repeat="marker in Ctrl.markers"></div>
+      <div class="col-md-9" ng-controller="MapController">
+        <div class="map" google-map center="location.center">
+          <div google-marker position="marker.position" ng-repeat="marker in markers"></div>
         </div>
       </div>
     </div>

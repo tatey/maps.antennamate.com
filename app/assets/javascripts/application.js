@@ -52,9 +52,17 @@ app.factory('SiteResource', ['$http', function($http) {
   return SiteResource;
 }]);
 
-app.controller('MapController', ['Location', function(Location) {
-  this.location = Location;
-  this.markers = [{position: {lat: -34.397, lng: 150.644}}];
+app.controller('MapController', ['$scope', 'Location', 'SiteResource', function($scope, Location, SiteResource) {
+  $scope.location = Location;
+  $scope.markers = [];
+
+  $scope.$watch('location.center', function(center) {
+    SiteResource.nearby(center).then(function(sites) {
+      $scope.markers = _.map(sites, function(site) {
+        return {position: {lat: site.latitude, lng: site.longitude}};
+      });
+    });
+  });
 }]);
 
 app.controller('SitesController', ['$scope', 'Location', 'SiteResource', function($scope, Location, SiteResource) {

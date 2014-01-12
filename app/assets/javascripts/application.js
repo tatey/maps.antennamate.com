@@ -13,10 +13,10 @@ app.factory('Location', [function() {
 
 app.controller('MapController', ['Location', function(Location) {
   this.location = Location;
+  this.markers  = [{position: {lat: -34.397, lng: 150.644}}];
 }]);
 
 app.controller('TransmittersController', ['Location', function(Location) {
-  this.markers  = [{lat: -34.397, lng: 150.644}];
   this.location = Location;
 }]);
 
@@ -74,7 +74,15 @@ app.directive('googleMarker', [function() {
     require: '^googleMap',
 
     link: function(scope, el, attrs, googleMap) {
-      debugger;
+      var position, latlng, marker;
+
+      position = scope.position;
+      latlng   = new google.maps.LatLng(position.lat, position.lng);
+      marker   = new google.maps.Marker({map: googleMap.map, position: latlng});
+
+      scope.$on('$destroy', function() {
+        marker.setMap(null);
+      });
     }
   }
 }]);

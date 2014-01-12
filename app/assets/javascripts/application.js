@@ -12,13 +12,53 @@ app.factory('Location', [function() {
   };
 }]);
 
-app.controller('MapController', ['Location', function(Location) {
-  this.location = Location;
-  this.markers  = [{position: {lat: -34.397, lng: 150.644}}];
+app.factory('Transmitter', ['$http', function($http) {
+  var _radians;
+
+  var Transmitter = function(props) {
+    angular.extend(this, props);
+    return this;
+  };
+
+  Transmitter.nearby = function(position) {
+    return this.query().then(function(transmitters) {
+      return _.filter(transmitters, function(transmitter) {
+        return transmitter.isNear(position);
+      });
+    });
+  };
+
+  Transmitter.query = function() {
+    return $http({
+      url: '/data.json',
+      method: 'GET'
+    })
+    .then(function(response) {
+      return _.map(response.data, function(props) {
+        return new Transmitter(props);
+      });
+    });
+  };
+
+  Transmitter.prototype.isNear = function(position) {
+    return (Math.acos(Math.sin(_radians(this.latitude)) * Math.sin(_radians(position.lat)) + Math.cos(_radians(this.latitude)) * Math.cos(_radians(position.lat)) * Math.cos(_radians(position.lng) - _radians(this.longitude))) * 6378100) <= 150000;
+  };
+
+  _radians = function(degrees) {
+    return degrees * Math.PI / 180.0;
+  };
+
+  return Transmitter;
 }]);
 
-app.controller('TransmittersController', ['Location', function(Location) {
+app.controller('MapController', ['Location', function(Location) {
   this.location = Location;
+  this.markers = [{position: {lat: -34.397, lng: 150.644}}];
+}]);
+
+app.controller('TransmittersController', ['Location', 'Transmitter', function(Location, Transmitter) {
+  this.location = Location;
+  this.transmitters = Transmitter.nearby(this.location.center);
 }]);
 
 app.directive('googleMap', ['$document', '$timeout', function($document, $timeout) {

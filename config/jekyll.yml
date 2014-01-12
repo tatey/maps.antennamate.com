@@ -1,6 +1,6 @@
 # Directories
 source: 'app'
-destination: 'dist'
+destination: 'tmp/site'
 plugins: 'plugins'
 
 # Don't copy these files into the destination.

@@ -1,2 +1,5 @@
-# Ignore the temp directory.
+# Ignore npm.
+/node_modules
+
+# Ignore temporary files.
 /tmp

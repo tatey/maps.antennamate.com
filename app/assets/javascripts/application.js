@@ -1,4 +1,5 @@
 //= require angular
+//= require underscore
 
 var app = angular.module('am', []);
 

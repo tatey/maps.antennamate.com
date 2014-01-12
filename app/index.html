@@ -17,7 +17,9 @@
         <span ng-bind="Ctrl.location.center | json"></span>
       </div>
       <div class="col-md-9" ng-controller="MapController as Ctrl">
-        <div class="map" google-map center="Ctrl.location.center"></div>
+        <div class="map" google-map center="Ctrl.location.center">
+          <div google-marker></div>
+        </div>
       </div>
     </div>
   </div>

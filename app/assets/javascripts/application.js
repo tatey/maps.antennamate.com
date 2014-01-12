@@ -16,32 +16,65 @@ app.controller('MapController', ['Location', function(Location) {
 }]);
 
 app.controller('TransmittersController', ['Location', function(Location) {
+  this.markers  = [{lat: -34.397, lng: 150.644}];
   this.location = Location;
 }]);
 
-app.directive('googleMap', ['$timeout', function($timeout) {
+app.directive('googleMap', ['$document', '$timeout', function($document, $timeout) {
   return {
     scope: {
       'center': '='
     },
 
-    link: function(scope, el, attrs) {
-      var options = {
-        zoom: 8,
-        center: new google.maps.LatLng(scope.center.lat, scope.center.lng)
+    controller: function() {
+      this.map = undefined;
+    },
+
+    compile: function(el, attrs) {
+      return {
+        pre: function(scope, el, attrs, controller) {
+          var div, map, center = scope.center;
+
+          div = angular.element('<div>').css({width: '100%', height: '100%'});
+          el.prepend(div);
+
+          map = new google.maps.Map(div[0], {
+            zoom: 8,
+            center: new google.maps.LatLng(center.lat, center.lng)
+          });
+
+          controller.map = map;
+        },
+
+        post: function(scope, el, attrs, controller) {
+          var map = controller.map;
+
+          google.maps.event.addListener(map, 'center_changed', function() {
+            var center = map.getCenter();
+
+            $timeout(function() {
+              scope.center = {
+                lat: center.lat(),
+                lng: center.lng()
+              };
+            });
+          });
+        }
       };
-
-      var map = new google.maps.Map(el[0], options);
-
-      google.maps.event.addListener(map, 'center_changed', function() {
-        $timeout(function() {
-          var center = map.getCenter();
-          scope.center = {
-            lat: center.lat(),
-            lng: center.lng()
-          };
-        });
-      });
     }
   };
+}]);
+
+app.directive('googleMarker', [function() {
+  return {
+    scope: {
+      position: '='
+    },
+
+    require: '^googleMap',
+
+    link: function(scope, el, attrs, googleMap) {
+      debugger;
+    }
+  }
 }]);

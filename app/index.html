@@ -13,18 +13,18 @@
 <body ng-app="am" class="panes">
   <div class="pane-left" ng-controller="MapController">
     <div class="map" google-map center="location.center">
-      <div google-marker click="marker.open = true" position="marker.position" ng-repeat="marker in markers">
-        <div google-info-window open="marker.open">
+      <div google-marker click="site.open = true" position="site.getPosition()" ng-repeat="site in sites">
+        <div google-info-window open="site.open">
         </div>
       </div>
     </div>
   </div>
   <div class="pane-right" ng-controller="SitesController">
     <div class="list-group">
-      <div class="list-group-item am-list-group-item" ng-repeat="site in sites">
+      <a class="list-group-item am-list-group-item" ng-click="site.open = true" ng-class="{active: site.open}" ng-repeat="site in sites">
         <h4 class="list-group-item-heading" ng-bind="site.name"></h4>
         <p class="list-group-item-text" ng-bind="site.area_served"></p>
-      </div>
+      </a>
     </div>
   </div>
 </body>

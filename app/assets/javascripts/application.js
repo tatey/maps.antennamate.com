@@ -12,6 +12,49 @@ app.factory('Location', [function() {
   };
 }]);
 
+app.factory('SiteCollection', ['$q', 'SiteResource', function($q, SiteResource) {
+  var SiteCollection = function() {
+    this.deferreds = [];
+    this.sites = [];
+    this.resolved = false;
+    return this;
+  }
+
+  SiteCollection.prototype.nearby = function(position) {
+    return _.filter(this.sites, function(site) {
+      return site.isNear(position);
+    });
+  };
+
+  SiteCollection.prototype.ready = function() {
+    var deferred = $q.defer();
+
+    if (this.resolved) {
+      deferred.resolve();
+    } else {
+      this.deferreds.push(deferred);
+    }
+
+    return deferred.promise;
+  };
+
+  SiteCollection.prototype.query = function() {
+    var _this = this;
+    SiteResource.query().then(function(sites) {
+      _.invoke(_this.deferreds, 'resolve');
+
+      _this.deferreds = [];
+      _this.sites = sites;
+      _this.resolved = true;
+    });
+  };
+
+  SiteCollection.defaultCollection = new SiteCollection();
+  SiteCollection.defaultCollection.query();
+
+  return SiteCollection;
+}]);
+
 app.factory('SiteResource', ['$http', function($http) {
   var _radians;
 
@@ -20,19 +63,10 @@ app.factory('SiteResource', ['$http', function($http) {
     return this;
   };
 
-  SiteResource.nearby = function(position) {
-    return this.query().then(function(sites) {
-      return _.filter(sites, function(site) {
-        return site.isNear(position);
-      });
-    });
-  };
-
   SiteResource.query = function() {
     return $http({
       url: '/data.json',
-      method: 'GET',
-      cache: true
+      method: 'GET'
     })
     .then(function(response) {
       return _.map(response.data, function(props) {
@@ -45,6 +79,13 @@ app.factory('SiteResource', ['$http', function($http) {
     return (Math.acos(Math.sin(_radians(this.latitude)) * Math.sin(_radians(position.lat)) + Math.cos(_radians(this.latitude)) * Math.cos(_radians(position.lat)) * Math.cos(_radians(position.lng) - _radians(this.longitude))) * 6378100) <= 150000;
   };
 
+  SiteResource.prototype.getPosition = function() {
+    if (!this.position) {
+      this.position = {lat: this.latitude, lng: this.longitude};
+    }
+    return this.position;
+  };
+
   _radians = function(degrees) {
     return degrees * Math.PI / 180.0;
   };
@@ -52,27 +93,33 @@ app.factory('SiteResource', ['$http', function($http) {
   return SiteResource;
 }]);
 
-app.controller('MapController', ['$scope', 'Location', 'SiteResource', function($scope, Location, SiteResource) {
-  $scope.location = Location;
-  $scope.markers = [];
+app.controller('MapController', ['$scope', 'Location', 'SiteCollection', function($scope, Location, SiteCollection) {
+  var siteCollection = SiteCollection.defaultCollection;
 
-  $scope.$watch('location.center', function(center) {
-    SiteResource.nearby(center).then(function(sites) {
-      $scope.markers = _.map(sites, function(site) {
-        return {position: {lat: site.latitude, lng: site.longitude}};
-      });
-    });
-  });
-}]);
-
-app.controller('SitesController', ['$scope', 'Location', 'SiteResource', function($scope, Location, SiteResource) {
   $scope.location = Location;
   $scope.sites = [];
 
+  siteCollection.ready().then(function() {
+    $scope.sites = siteCollection.nearby($scope.location.center);
+  });
+
   $scope.$watch('location.center', function(center) {
-    SiteResource.nearby(center).then(function(sites) {
-      $scope.sites = sites;
-    });
+    $scope.sites = siteCollection.nearby(center);
+  });
+}]);
+
+app.controller('SitesController', ['$scope', 'Location', 'SiteCollection', function($scope, Location, SiteCollection) {
+  var siteCollection = SiteCollection.defaultCollection;
+
+  $scope.location = Location;
+  $scope.sites = [];
+
+  siteCollection.ready().then(function() {
+    $scope.sites = siteCollection.nearby($scope.location.center);
+  });
+
+  $scope.$watch('location.center', function(center) {
+    $scope.sites = siteCollection.nearby(center);
   });
 }]);
 

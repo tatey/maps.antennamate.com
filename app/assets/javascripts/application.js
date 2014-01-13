@@ -255,7 +255,7 @@ app.directive('googleInfoWindow', ['$timeout', function($timeout) {
 
       map = googleMarkerCtrl.map;
       marker = googleMarkerCtrl.marker;
-      infoWindow = new google.maps.InfoWindow({content: 'Test'});
+      infoWindow = new google.maps.InfoWindow();
 
       listener = google.maps.event.addListener(infoWindow, 'closeclick', function() {
         $timeout(function() {
@@ -267,6 +267,7 @@ app.directive('googleInfoWindow', ['$timeout', function($timeout) {
         if (typeof value === 'undefined') return;
 
         if (value) {
+          infoWindow.setContent(el.html());
           infoWindow.open(map, marker);
         } else {
           infoWindow.close();

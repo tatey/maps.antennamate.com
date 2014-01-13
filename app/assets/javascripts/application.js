@@ -88,7 +88,7 @@ app.directive('googleMap', ['$timeout', function($timeout) {
 
     compile: function(el, attrs) {
       return {
-        pre: function(scope, el, attrs, controller) {
+        pre: function(scope, el, attrs, ctrl) {
           var div, map, center = scope.center;
 
           div = angular.element('<div>').css({width: '100%', height: '100%'});
@@ -101,11 +101,11 @@ app.directive('googleMap', ['$timeout', function($timeout) {
             zoomControl: true
           });
 
-          controller.map = map;
+          ctrl.map = map;
         },
 
-        post: function(scope, el, attrs, controller) {
-          var map = controller.map;
+        post: function(scope, el, attrs, ctrl) {
+          var map = ctrl.map;
 
           google.maps.event.addListener(map, 'dragend', function() {
             var center = map.getCenter();
@@ -123,24 +123,91 @@ app.directive('googleMap', ['$timeout', function($timeout) {
   };
 }]);
 
-app.directive('googleMarker', [function() {
+app.directive('googleMarker', ['$timeout', function($timeout) {
   return {
     scope: {
+      click: '&',
       position: '='
     },
 
-    require: '^googleMap',
+    require: ['^googleMap', 'googleMarker'],
 
-    link: function(scope, el, attrs, googleMap) {
-      var position, latlng, marker;
+    controller: function() {
+      this.map = undefined;
+      this.marker = undefined;
+    },
 
-      position = scope.position;
-      latlng   = new google.maps.LatLng(position.lat, position.lng);
-      marker   = new google.maps.Marker({map: googleMap.map, position: latlng});
+    compile: function(el, attrs) {
+      return {
+        pre: function(scope, el, attrs, controllers) {
+          var googleMapCtrl, googleMarkerCtrl;
+
+          googleMapCtrl = controllers[0];
+          googleMarkerCtrl = controllers[1];
+
+          var position, map, marker;
+
+          position = scope.position;
+          map = googleMapCtrl.map;
+          marker = new google.maps.Marker({
+            map: map,
+            position: new google.maps.LatLng(position.lat, position.lng)
+          });
+
+          googleMarkerCtrl.map = map;
+          googleMarkerCtrl.marker = marker;
+        },
+
+        post: function(scope, el, attrs, controllers) {
+          var listener, marker;
+
+          marker = controllers[1].marker;
+          listener = google.maps.event.addListener(marker, 'click', function() {
+            $timeout(function() {
+              scope.click();
+            });
+          });
+
+          scope.$on('$destroy', function() {
+            google.maps.event.removeListener(listener);
+            marker.setMap(null);
+          });
+        }
+      };
+    }
+  };
+}]);
+
+app.directive('googleInfoWindow', ['$timeout', function($timeout) {
+  return {
+    scope: {
+      open: '='
+    },
+
+    require: '^googleMarker',
+
+    link: function(scope, el, attrs, googleMarkerCtrl) {
+      var map, marker, infoWindow, listener;
+
+      map = googleMarkerCtrl.map;
+      marker = googleMarkerCtrl.marker;
+      infoWindow = new google.maps.InfoWindow({content: 'Test'});
+
+      listener = google.maps.event.addListener(infoWindow, 'closeclick', function() {
+        $timeout(function() {
+          scope.open = false;
+        });
+      });
+
+      scope.$watch('open', function(value) {
+        if (value) infoWindow.open(map, marker);
+      });
 
       scope.$on('$destroy', function() {
-        marker.setMap(null);
+        google.maps.event.removeListener(listener);
+        scope.open = false;
+        infoWindow.close();
       });
     }
-  }
+  };
 }]);

@@ -13,7 +13,10 @@
 <body ng-app="am" class="panes">
   <div class="pane-left" ng-controller="MapController">
     <div class="map" google-map center="location.center">
-      <div google-marker position="marker.position" ng-repeat="marker in markers"></div>
+      <div google-marker click="marker.open = true" position="marker.position" ng-repeat="marker in markers">
+        <div google-info-window open="marker.open">
+        </div>
+      </div>
     </div>
   </div>
   <div class="pane-right" ng-controller="SitesController">

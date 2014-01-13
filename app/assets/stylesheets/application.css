@@ -1,6 +1,36 @@
 /*= require bootstrap */
 
+html,
+body {
+  height: 100%;
+}
+
+.pane-left {
+  float: left;
+  width: 75%;
+  height: 100%;
+}
+
+.pane-right {
+  float: left;
+  width: 25%;
+  overflow: scroll;
+  height: 100%;
+  padding: 15px;
+}
+
+.pane-right:before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  top: 0;
+  right: 25%;
+  box-shadow: inset -1px 0 1px rgba(0,0,0,0.3);
+  width: 2px;
+  z-index: 2;
+}
+
 .map {
   width: 100%;
-  height: 500px;
+  height: 100%;
 }

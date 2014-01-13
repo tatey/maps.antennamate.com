@@ -10,19 +10,17 @@
   <script type="text/javascript" src="{% asset_path application.js %}"></script>
   <link rel="stylesheet" type="text/css" href="{% asset_path application.css %}"/>
 </head>
-<body ng-app="am">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-3" ng-controller="SitesController">
-        <div ng-repeat="site in sites">
-          <span ng-bind="site.name"></span>
-          <span ng-bind="site.area_served"></span>
-        </div>
-      </div>
-      <div class="col-md-9" ng-controller="MapController">
-        <div class="map" google-map center="location.center">
-          <div google-marker position="marker.position" ng-repeat="marker in markers"></div>
-        </div>
+<body ng-app="am" class="panes">
+  <div class="pane-left" ng-controller="MapController">
+    <div class="map" google-map center="location.center">
+      <div google-marker position="marker.position" ng-repeat="marker in markers"></div>
+    </div>
+  </div>
+  <div class="pane-right" ng-controller="SitesController">
+    <div class="list-group">
+      <div class="list-group-item am-list-group-item" ng-repeat="site in sites">
+        <h4 class="list-group-item-heading" ng-bind="site.name"></h4>
+        <p class="list-group-item-text" ng-bind="site.area_served"></p>
       </div>
     </div>
   </div>

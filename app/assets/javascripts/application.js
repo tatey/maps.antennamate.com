@@ -105,7 +105,7 @@ app.directive('googleMap', ['$timeout', function($timeout) {
         post: function(scope, el, attrs, controller) {
           var map = controller.map;
 
-          google.maps.event.addListener(map, 'center_changed', function() {
+          google.maps.event.addListener(map, 'dragend', function() {
             var center = map.getCenter();
 
             $timeout(function() {

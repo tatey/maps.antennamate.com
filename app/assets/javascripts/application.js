@@ -74,7 +74,7 @@ app.factory('SiteResource', ['$http', function($http) {
 
   SiteResource.query = function() {
     return $http({
-      url: '/data.json',
+      url: '/data/sites.json',
       method: 'GET'
     })
     .then(function(response) {

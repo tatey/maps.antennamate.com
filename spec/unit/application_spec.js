@@ -1,3 +1,38 @@
+describe('SiteCollection', function() {
+  var SiteCollection;
+
+  beforeEach(function() {
+    module('am');
+
+    inject(function($injector) {
+      SiteCollection = $injector.get('SiteCollection');
+    });
+  });
+
+  describe('#open', function() {
+    var newSite, oldSite;
+
+    beforeEach(function() {
+      var collection;
+
+      newSite = {open: false};
+      oldSite = {open: true};
+      collection = new SiteCollection();
+      collection.sites = [oldSite, newSite];
+
+      collection.open(newSite);
+    });
+
+    it('sets new site as open', function() {
+      expect(newSite.open).toBeTruthy();
+    });
+
+    it('sets old site as closed', function() {
+      expect(oldSite.open).toBeFalsy();
+    });
+  });
+});
+
 describe('SiteResource', function() {
   var SiteResource;
 

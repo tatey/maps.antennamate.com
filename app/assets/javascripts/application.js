@@ -20,6 +20,15 @@ app.factory('SiteCollection', ['$q', 'SiteResource', function($q, SiteResource) 
     return this;
   }
 
+  SiteCollection.prototype.open = function(newSite) {
+    var oldSite = _.find(this.sites, function(oldSite) {
+      return oldSite.open;
+    }) || {};
+
+    oldSite.open = false;
+    newSite.open = true;
+  };
+
   SiteCollection.prototype.nearby = function(position) {
     return _.filter(this.sites, function(site) {
       return site.isNear(position);
@@ -99,6 +108,10 @@ app.controller('MapController', ['$scope', 'Location', 'SiteCollection', functio
   $scope.location = Location;
   $scope.sites = [];
 
+  $scope.open = function(site) {
+    siteCollection.open(site);
+  };
+
   siteCollection.ready().then(function() {
     $scope.sites = siteCollection.nearby($scope.location.center);
   });
@@ -113,6 +126,10 @@ app.controller('SitesController', ['$scope', 'Location', 'SiteCollection', funct
 
   $scope.location = Location;
   $scope.sites = [];
+
+  $scope.open = function(site) {
+    siteCollection.open(site);
+  };
 
   siteCollection.ready().then(function() {
     $scope.sites = siteCollection.nearby($scope.location.center);
@@ -247,7 +264,13 @@ app.directive('googleInfoWindow', ['$timeout', function($timeout) {
       });
 
       scope.$watch('open', function(value) {
-        if (value) infoWindow.open(map, marker);
+        if (typeof value === 'undefined') return;
+
+        if (value) {
+          infoWindow.open(map, marker);
+        } else {
+          infoWindow.close();
+        }
       });
 
       scope.$on('$destroy', function() {

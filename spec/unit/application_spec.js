@@ -1,3 +1,53 @@
+describe('Router', function() {
+  var Router, location;
+
+  beforeEach(function() {
+    location = {};
+
+    module('am', function($provide) {
+      $provide.value('$location', location);
+    });
+
+    inject(function($injector) {
+      Router = $injector.get('Router');
+    });
+  });
+
+  describe('#getCenter', function() {
+    var router;
+
+    beforeEach(function() {
+      router = new Router();
+    });
+
+    it('is object with lat and lng', function() {
+      location.path = function() { return '/-30.680,152.505'; };
+
+      expect(router.getCenter()).toEqual({lat: '-30.680', lng: '152.505'});
+    });
+
+    it('is default', function() {
+      location.path = function() { return '/'; };
+
+      expect(router.getCenter('default')).toBe('default');
+    });
+  });
+
+  describe('#setCenter', function() {
+    it('fixes to 3 decimal places', function() {
+      var router;
+
+      router = new Router();
+      location.path = angular.noop;
+      spyOn(location, 'path');
+
+      router.setCenter({lat: -30.680384384, lng: 152.505393583});
+
+      expect(location.path).toHaveBeenCalledWith('/-30.680,152.505');
+    });
+  });
+});
+
 describe('SiteCollection', function() {
   var SiteCollection;
 

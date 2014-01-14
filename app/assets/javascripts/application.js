@@ -3,11 +3,14 @@
 
 var app = angular.module('am', []);
 
-app.controller('ApplicationController', ['$scope', '$location', 'Location', 'SiteCollection', function($scope, $location, Location, SiteCollection) {
-  var location = Location.defaultLocation,
-      sites = SiteCollection.defaultCollection;
+app.controller('ApplicationController', ['$scope', 'Location', 'Router', 'SiteCollection', function($scope, Location, Router, SiteCollection) {
+  var location, router, sites;
 
-  location.setCenter(_.pick($location.search(), 'lat', 'lng'));
+  location = new Location();
+  router = new Router();
+  sites = new SiteCollection();
+
+  location.setCenter(router.getCenter(location.center));
   sites.query();
 
   $scope.location = location;
@@ -18,8 +21,36 @@ app.controller('ApplicationController', ['$scope', '$location', 'Location', 'Sit
   };
 
   $scope.$watch('location.center', function(center) {
-    $location.search({lat: center.lat, lng: center.lng});
+    router.setCenter(center);
   });
+}]);
+
+app.factory('Router', ['$location', function($location) {
+  var Router = function() {
+    return this;
+  };
+
+  Router.prototype.getCenter = function(defaultCenter) {
+    var match;
+
+    match = $location.path().match(/^\/([\d\.\-]+),([\d\.\-]+)$/) || [];
+    if (match.length === 3) {
+      return {lat: match[1], lng: match[2]};
+    } else {
+      return defaultCenter;
+    }
+  };
+
+  Router.prototype.setCenter = function(center) {
+    var lat, lng;
+
+    lat = parseFloat(center.lat);
+    lng = parseFloat(center.lng);
+
+    $location.path('/' + lat.toFixed(3) + ',' + lng.toFixed(3));
+  };
+
+  return Router;
 }]);
 
 app.factory('Location', [function() {
@@ -29,10 +60,8 @@ app.factory('Location', [function() {
   };
 
   Location.prototype.setCenter = function(center) {
-    _.extend(this.center, center);
+    this.center = center;
   };
-
-  Location.defaultLocation = new Location();
 
   return Location;
 }]);
@@ -42,8 +71,6 @@ app.factory('SiteCollection', ['SiteResource', function(SiteResource) {
     this.sites = [];
     return this;
   }
-
-  SiteCollection.defaultCollection = new SiteCollection();
 
   SiteCollection.prototype.open = function(newSite) {
     var oldSite = _.find(this.sites, function(oldSite) {

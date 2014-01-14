@@ -17,24 +17,34 @@
         <div google-info-window click="close(site)" open="site.open">
           <h4 ng-bind="site.name"></h4>
           <p ng-bind="site.area_served"></p>
-          <div ng-repeat="transmitter in site.transmitters">
-            <p ng-bind="transmitter | json"></p>
-          </div>
+          <table>
+            <tbody>
+              <tr ng-repeat="transmitter in site.transmitters">
+                <td ng-bind="transmitter.callsign"></td>
+                <td ng-bind="transmitter.channel"></td>
+                <td ng-bind="transmitter.frequency"></td>
+                <td ng-bind="transmitter.antenna_height"></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </div>
+
   <div class="pane-right">
     <div class="pane-header">
       <h1 class="pane-header-title">Antenna Mate</h1>
       <a href="http://antennamate.com" class="btn btn-primary pane-header-btn">Download the iPhone app</a>
     </div>
+
     <div class="list-group" ng-cloak>
       <a class="list-group-item am-list-group-item" ng-click="open(site)" ng-class="{active: site.open}" ng-repeat="site in sites.nearby(location.center)">
         <h4 class="list-group-item-heading" ng-bind="site.name"></h4>
         <p class="list-group-item-text" ng-bind="site.area_served"></p>
       </a>
     </div>
+
     <div class="pane-footer" ng-cloak>
       <p>Based on <a href="http://acma.gov.au/">ACMA</a> and <a href="http://www.ofcom.org.uk/">Ofcom</a> data.</p>
     </div>

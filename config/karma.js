@@ -12,7 +12,10 @@ module.exports = function(config) {
       'vendor/assets/javascripts/angular-mocks.js',
       'vendor/assets/javascripts/underscore.js',
       'app/assets/javascripts/application.js',
-      'spec/unit/*_spec.js'
+      'app/assets/javascripts/controllers/*.js',
+      'app/assets/javascripts/directives/*.js',
+      'app/assets/javascripts/services/*.js',
+      'spec/unit/**/*_spec.js'
     ],
 
     // test results reporter to use

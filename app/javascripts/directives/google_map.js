@@ -19,7 +19,7 @@ app.directive('googleMap', ['$timeout', function($timeout) {
           el.prepend(div);
 
           map = new google.maps.Map(div[0], {
-            zoom: 8,
+            zoom: 9,
             center: new google.maps.LatLng(center.lat, center.lng),
             disableDefaultUI: true,
             zoomControl: true

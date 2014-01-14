@@ -29,4 +29,4 @@ Open in your browser.
 
 Run the entire test suite.
 
-    $ bin/karma config/karma.js
+    $ script/spec

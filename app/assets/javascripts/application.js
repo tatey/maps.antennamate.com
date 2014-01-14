@@ -5,13 +5,27 @@ var app = angular.module('am', []);
 
 app.controller('ApplicationController', ['$scope', 'Location', 'SiteCollection', 'URL', function($scope, Location, SiteCollection, URL) {
   Location.setCenter(URL.getCenter(Location.center));
-  SiteCollection.query();
+
+  SiteCollection.query().then(function() {
+    var site;
+
+    site = SiteCollection.findById(URL.getId());
+    if (site) {
+      SiteCollection.openSite(site);
+    }
+  });
 
   $scope.location = Location;
   $scope.sites = SiteCollection;
 
+  $scope.close = function(site) {
+    SiteCollection.closeSite(site);
+    URL.unsetId();
+  };
+
   $scope.open = function(site) {
-    $scope.sites.open(site);
+    SiteCollection.openSite(site);
+    URL.setId(site.id);
   };
 
   $scope.$watch('location.center', function(center) {
@@ -22,11 +36,11 @@ app.controller('ApplicationController', ['$scope', 'Location', 'SiteCollection',
 app.factory('URL', ['$location', function($location) {
   return {
     getCenter: function(defaultCenter) {
-      var match;
+      var center;
 
-      match = $location.path().match(/^\/([\d\.\-]+),([\d\.\-]+)$/) || [];
-      if (match.length === 3) {
-        return {lat: match[1], lng: match[2]};
+      center = _.pick($location.search(), 'lat', 'lng');
+      if (!_.isEmpty(center)) {
+        return center;
       } else {
         return defaultCenter;
       }
@@ -35,10 +49,26 @@ app.factory('URL', ['$location', function($location) {
     setCenter: function(center) {
       var lat, lng;
 
-      lat = parseFloat(center.lat);
-      lng = parseFloat(center.lng);
+      lat = parseFloat(center.lat).toFixed(3);
+      lng = parseFloat(center.lng).toFixed(3);
 
-      $location.path('/' + lat.toFixed(3) + ',' + lng.toFixed(3));
+      $location.search(_.extend($location.search(), {lat: lat, lng: lng}));
+    },
+
+    getId: function() {
+      var id = $location.search().id;
+
+      if (id) {
+        return parseInt(id);
+      }
+    },
+
+    setId: function(id) {
+      $location.search(_.extend($location.search(), {id: id}));
+    },
+
+    unsetId: function() {
+      $location.search(_.omit($location.search(), 'id'));
     }
   }
 }]);
@@ -60,7 +90,17 @@ app.factory('SiteCollection', ['SiteResource', function(SiteResource) {
   return {
     sites: [],
 
-    open: function(newSite) {
+    findById: function(id) {
+      return _.find(this.sites, function(site) {
+        return site.id === id;
+      });
+    },
+
+    closeSite: function(oldSite) {
+      oldSite.open = false;
+    },
+
+    openSite: function(newSite) {
       var oldSite = _.find(this.sites, function(oldSite) {
         return oldSite.open;
       }) || {};
@@ -227,6 +267,7 @@ app.directive('googleMarker', ['$timeout', function($timeout) {
 app.directive('googleInfoWindow', ['$timeout', function($timeout) {
   return {
     scope: {
+      click: '&',
       open: '='
     },
 
@@ -241,7 +282,7 @@ app.directive('googleInfoWindow', ['$timeout', function($timeout) {
 
       listener = google.maps.event.addListener(infoWindow, 'closeclick', function() {
         $timeout(function() {
-          scope.open = false;
+          scope.click();
         });
       });
 
@@ -258,7 +299,6 @@ app.directive('googleInfoWindow', ['$timeout', function($timeout) {
 
       scope.$on('$destroy', function() {
         google.maps.event.removeListener(listener);
-        scope.open = false;
         infoWindow.close();
       });
     }

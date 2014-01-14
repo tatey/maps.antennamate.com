@@ -2,26 +2,23 @@ describe('URL', function() {
   var URL, location;
 
   beforeEach(function() {
-    location = {};
-
-    module('am', function($provide) {
-      $provide.value('$location', location);
-    });
+    module('am');
 
     inject(function($injector) {
+      location = $injector.get('$location');
       URL = $injector.get('URL');
     });
   });
 
   describe('#getCenter', function() {
     it('is object with lat and lng', function() {
-      location.path = function() { return '/-30.680,152.505'; };
+      location.search({lat: '-30.680', lng: '152.505'});
 
       expect(URL.getCenter()).toEqual({lat: '-30.680', lng: '152.505'});
     });
 
     it('is default', function() {
-      location.path = function() { return '/'; };
+      location.search({});
 
       expect(URL.getCenter('default')).toBe('default');
     });
@@ -29,12 +26,41 @@ describe('URL', function() {
 
   describe('#setCenter', function() {
     it('fixes to 3 decimal places', function() {
-      location.path = angular.noop;
-      spyOn(location, 'path');
+      URL.setCenter({lat: -30.680384384, lng: 152.505393583});
+
+      expect(location.search()).toEqual({lat: '-30.680', lng: '152.505'});
+    });
+
+    it('persists persists other properties', function() {
+      location.search({id: '1'});
 
       URL.setCenter({lat: -30.680384384, lng: 152.505393583});
 
-      expect(location.path).toHaveBeenCalledWith('/-30.680,152.505');
+      expect(location.search()).toEqual({id: '1', lat: '-30.680', lng: '152.505'});
+    });
+  });
+
+  describe('#getId', function() {
+    it('is integer', function() {
+      location.search({id: '42'});
+
+      expect(URL.getId()).toBe(42);
+    });
+
+    it('is undefined', function() {
+      location.search({});
+
+      expect(URL.getId()).toBeUndefined();
+    });
+  });
+
+  describe('#unsetId', function() {
+    it('persists persists other properties', function() {
+      location.search({id: '1', lat: '-30.680', lng: '152.505'});
+
+      URL.unsetId();
+
+      expect(location.search()).toEqual({lat: '-30.680', lng: '152.505'});
     });
   });
 });
@@ -50,7 +76,7 @@ describe('SiteCollection', function() {
     });
   });
 
-  describe('#open', function() {
+  describe('#openSite', function() {
     var newSite, oldSite;
 
     beforeEach(function() {
@@ -58,7 +84,7 @@ describe('SiteCollection', function() {
       oldSite = {open: true};
 
       SiteCollection.sites = [oldSite, newSite];
-      SiteCollection.open(newSite);
+      SiteCollection.openSite(newSite);
     });
 
     it('sets new site as open', function() {

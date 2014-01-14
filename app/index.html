@@ -14,7 +14,7 @@
   <div class="pane-left">
     <div class="map" google-map center="location.center">
       <div google-marker click="open(site)" position="site.getPosition()" ng-repeat="site in sites.nearby(location.center)" class="hide">
-        <div google-info-window open="site.open">
+        <div google-info-window click="close(site)" open="site.open">
           <h4 ng-bind="site.name"></h4>
           <p ng-bind="site.area_served"></p>
         </div>

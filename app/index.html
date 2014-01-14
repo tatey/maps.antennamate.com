@@ -10,10 +10,10 @@
   <script type="text/javascript" src="{% asset_path application.js %}"></script>
   <link rel="stylesheet" type="text/css" href="{% asset_path application.css %}"/>
 </head>
-<body ng-app="am" class="panes">
-  <div class="pane-left" ng-controller="MapController">
+<body class="panes" ng-app="am" ng-controller="ApplicationController">
+  <div class="pane-left">
     <div class="map" google-map center="location.center">
-      <div google-marker click="open(site)" position="site.getPosition()" ng-repeat="site in sites" class="hide">
+      <div google-marker click="open(site)" position="site.getPosition()" ng-repeat="site in sites.nearby(location.center)" class="hide">
         <div google-info-window open="site.open">
           <h4 ng-bind="site.name"></h4>
           <p ng-bind="site.area_served"></p>
@@ -21,9 +21,9 @@
       </div>
     </div>
   </div>
-  <div class="pane-right" ng-controller="SitesController">
+  <div class="pane-right">
     <div class="list-group">
-      <a class="list-group-item am-list-group-item" ng-click="open(site)" ng-class="{active: site.open}" ng-repeat="site in sites">
+      <a class="list-group-item am-list-group-item" ng-click="open(site)" ng-class="{active: site.open}" ng-repeat="site in sites.nearby(location.center)">
         <h4 class="list-group-item-heading" ng-bind="site.name"></h4>
         <p class="list-group-item-text" ng-bind="site.area_served"></p>
       </a>

@@ -3,22 +3,47 @@
 
 var app = angular.module('am', []);
 
-app.factory('Location', [function() {
-  return {
-    center: {
-      lat: -34.397,
-      lng: 150.644
-    }
+app.controller('ApplicationController', ['$scope', '$location', 'Location', 'SiteCollection', function($scope, $location, Location, SiteCollection) {
+  var location = Location.defaultLocation,
+      sites = SiteCollection.defaultCollection;
+
+  location.setCenter(_.pick($location.search(), 'lat', 'lng'));
+  sites.query();
+
+  $scope.location = location;
+  $scope.sites = sites;
+
+  $scope.open = function(site) {
+    sites.open(site);
   };
+
+  $scope.$watch('location.center', function(center) {
+    $location.search({lat: center.lat, lng: center.lng});
+  });
 }]);
 
-app.factory('SiteCollection', ['$q', 'SiteResource', function($q, SiteResource) {
+app.factory('Location', [function() {
+  var Location = function() {
+    this.center = {lat: -34.397, lng: 150.644};
+    return this;
+  };
+
+  Location.prototype.setCenter = function(center) {
+    _.extend(this.center, center);
+  };
+
+  Location.defaultLocation = new Location();
+
+  return Location;
+}]);
+
+app.factory('SiteCollection', ['SiteResource', function(SiteResource) {
   var SiteCollection = function() {
-    this.deferreds = [];
     this.sites = [];
-    this.resolved = false;
     return this;
   }
+
+  SiteCollection.defaultCollection = new SiteCollection();
 
   SiteCollection.prototype.open = function(newSite) {
     var oldSite = _.find(this.sites, function(oldSite) {
@@ -35,31 +60,12 @@ app.factory('SiteCollection', ['$q', 'SiteResource', function($q, SiteResource) 
     });
   };
 
-  SiteCollection.prototype.ready = function() {
-    var deferred = $q.defer();
-
-    if (this.resolved) {
-      deferred.resolve();
-    } else {
-      this.deferreds.push(deferred);
-    }
-
-    return deferred.promise;
-  };
-
   SiteCollection.prototype.query = function() {
     var _this = this;
-    SiteResource.query().then(function(sites) {
-      _.invoke(_this.deferreds, 'resolve');
-
-      _this.deferreds = [];
+    return SiteResource.query().then(function(sites) {
       _this.sites = sites;
-      _this.resolved = true;
     });
   };
-
-  SiteCollection.defaultCollection = new SiteCollection();
-  SiteCollection.defaultCollection.query();
 
   return SiteCollection;
 }]);
@@ -100,44 +106,6 @@ app.factory('SiteResource', ['$http', function($http) {
   };
 
   return SiteResource;
-}]);
-
-app.controller('MapController', ['$scope', 'Location', 'SiteCollection', function($scope, Location, SiteCollection) {
-  var siteCollection = SiteCollection.defaultCollection;
-
-  $scope.location = Location;
-  $scope.sites = [];
-
-  $scope.open = function(site) {
-    siteCollection.open(site);
-  };
-
-  siteCollection.ready().then(function() {
-    $scope.sites = siteCollection.nearby($scope.location.center);
-  });
-
-  $scope.$watch('location.center', function(center) {
-    $scope.sites = siteCollection.nearby(center);
-  });
-}]);
-
-app.controller('SitesController', ['$scope', 'Location', 'SiteCollection', function($scope, Location, SiteCollection) {
-  var siteCollection = SiteCollection.defaultCollection;
-
-  $scope.location = Location;
-  $scope.sites = [];
-
-  $scope.open = function(site) {
-    siteCollection.open(site);
-  };
-
-  siteCollection.ready().then(function() {
-    $scope.sites = siteCollection.nearby($scope.location.center);
-  });
-
-  $scope.$watch('location.center', function(center) {
-    $scope.sites = siteCollection.nearby(center);
-  });
 }]);
 
 app.directive('googleMap', ['$timeout', function($timeout) {

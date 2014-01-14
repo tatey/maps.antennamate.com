@@ -22,11 +22,18 @@
     </div>
   </div>
   <div class="pane-right">
+    <div class="pane-header">
+      <h1 class="pane-header-title">Antenna Mate</h1>
+      <a href="http://antennamate.com" class="btn btn-primary pane-header-btn">Download the iPhone app</a>
+    </div>
     <div class="list-group">
       <a class="list-group-item am-list-group-item" ng-click="open(site)" ng-class="{active: site.open}" ng-repeat="site in sites.nearby(location.center)">
         <h4 class="list-group-item-heading" ng-bind="site.name"></h4>
         <p class="list-group-item-text" ng-bind="site.area_served"></p>
       </a>
+    </div>
+    <div class="pane-footer">
+      <p>Based on <a href="http://acma.gov.au/">ACMA</a> and <a href="http://www.ofcom.org.uk/">Ofcom</a> data.</p>
     </div>
   </div>
 </body>

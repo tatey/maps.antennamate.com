@@ -34,6 +34,24 @@ a {
   z-index: 2;
 }
 
+.pane-header {
+  padding: 15px 0;
+  text-align: center;
+}
+
+.pane-header-title {
+  margin: 0;
+  margin-bottom: 15px;
+}
+
+.pane-header-btn {
+  margin-bottom: 15px;
+}
+
+.pane-footer {
+  text-align: center;
+}
+
 .map {
   width: 100%;
   height: 100%;

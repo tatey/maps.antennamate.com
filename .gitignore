@@ -1,5 +1,6 @@
 # Ignore data files. These are too big to version.
 /app/data/*.json
+/app/data/sites/**/*.json
 
 # Ignore npm.
 /node_modules

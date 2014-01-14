@@ -17,6 +17,9 @@
         <div google-info-window click="close(site)" open="site.open">
           <h4 ng-bind="site.name"></h4>
           <p ng-bind="site.area_served"></p>
+          <div ng-repeat="transmitter in site.transmitters">
+            <p ng-bind="transmitter | json"></p>
+          </div>
         </div>
       </div>
     </div>

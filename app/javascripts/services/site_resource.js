@@ -1,6 +1,6 @@
 var app = angular.module('am');
 
-app.factory('SiteResource', ['$http', function($http) {
+app.factory('SiteResource', ['$http', 'TransmitterResource', function($http, TransmitterResource) {
   var _radians;
 
   var SiteResource = function(props) {
@@ -12,8 +12,7 @@ app.factory('SiteResource', ['$http', function($http) {
     return $http({
       url: '/data/sites.json',
       method: 'GET'
-    })
-    .then(function(response) {
+    }).then(function(response) {
       return _.map(response.data, function(props) {
         return new SiteResource(props);
       });
@@ -29,6 +28,13 @@ app.factory('SiteResource', ['$http', function($http) {
       this.position = {lat: this.latitude, lng: this.longitude};
     }
     return this.position;
+  };
+
+  SiteResource.prototype.queryTransmitters = function() {
+    var _this = this;
+    return TransmitterResource.query({site_id: this.id}).then(function(transmitters) {
+      _this.transmitters = transmitters;
+    });
   };
 
   _radians = function(degrees) {

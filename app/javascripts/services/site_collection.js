@@ -21,6 +21,7 @@ app.factory('SiteCollection', ['SiteResource', function(SiteResource) {
 
       oldSite.open = false;
       newSite.open = true;
+      newSite.queryTransmitters();
     },
 
     nearby: function(position) {

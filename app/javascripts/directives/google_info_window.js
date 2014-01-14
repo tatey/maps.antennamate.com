@@ -26,7 +26,7 @@ app.directive('googleInfoWindow', ['$timeout', function($timeout) {
         if (typeof value === 'undefined') return;
 
         if (value) {
-          infoWindow.setContent(el.html());
+          infoWindow.setContent(el[0]);
           infoWindow.open(map, marker);
         } else {
           infoWindow.close();

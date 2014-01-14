@@ -3,14 +3,14 @@
 
 var app = angular.module('am', []);
 
-app.controller('ApplicationController', ['$scope', 'Location', 'Router', 'SiteCollection', function($scope, Location, Router, SiteCollection) {
-  var location, router, sites;
+app.controller('ApplicationController', ['$scope', 'Location', 'SiteCollection', 'URL', function($scope, Location, SiteCollection, URL) {
+  var location, sites, url;
 
   location = new Location();
-  router = new Router();
   sites = new SiteCollection();
+  url = new URL();
 
-  location.setCenter(router.getCenter(location.center));
+  location.setCenter(url.getCenter(location.center));
   sites.query();
 
   $scope.location = location;
@@ -21,16 +21,16 @@ app.controller('ApplicationController', ['$scope', 'Location', 'Router', 'SiteCo
   };
 
   $scope.$watch('location.center', function(center) {
-    router.setCenter(center);
+    url.setCenter(center);
   });
 }]);
 
-app.factory('Router', ['$location', function($location) {
-  var Router = function() {
+app.factory('URL', ['$location', function($location) {
+  var URL = function() {
     return this;
   };
 
-  Router.prototype.getCenter = function(defaultCenter) {
+  URL.prototype.getCenter = function(defaultCenter) {
     var match;
 
     match = $location.path().match(/^\/([\d\.\-]+),([\d\.\-]+)$/) || [];
@@ -41,7 +41,7 @@ app.factory('Router', ['$location', function($location) {
     }
   };
 
-  Router.prototype.setCenter = function(center) {
+  URL.prototype.setCenter = function(center) {
     var lat, lng;
 
     lat = parseFloat(center.lat);
@@ -50,7 +50,7 @@ app.factory('Router', ['$location', function($location) {
     $location.path('/' + lat.toFixed(3) + ',' + lng.toFixed(3));
   };
 
-  return Router;
+  return URL;
 }]);
 
 app.factory('Location', [function() {

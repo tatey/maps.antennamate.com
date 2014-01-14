@@ -1,5 +1,5 @@
-describe('Router', function() {
-  var Router, location;
+describe('URL', function() {
+  var URL, location;
 
   beforeEach(function() {
     location = {};
@@ -9,39 +9,39 @@ describe('Router', function() {
     });
 
     inject(function($injector) {
-      Router = $injector.get('Router');
+      URL = $injector.get('URL');
     });
   });
 
   describe('#getCenter', function() {
-    var router;
+    var url;
 
     beforeEach(function() {
-      router = new Router();
+      url = new URL();
     });
 
     it('is object with lat and lng', function() {
       location.path = function() { return '/-30.680,152.505'; };
 
-      expect(router.getCenter()).toEqual({lat: '-30.680', lng: '152.505'});
+      expect(url.getCenter()).toEqual({lat: '-30.680', lng: '152.505'});
     });
 
     it('is default', function() {
       location.path = function() { return '/'; };
 
-      expect(router.getCenter('default')).toBe('default');
+      expect(url.getCenter('default')).toBe('default');
     });
   });
 
   describe('#setCenter', function() {
     it('fixes to 3 decimal places', function() {
-      var router;
+      var url;
 
-      router = new Router();
+      url = new URL();
       location.path = angular.noop;
       spyOn(location, 'path');
 
-      router.setCenter({lat: -30.680384384, lng: 152.505393583});
+      url.setCenter({lat: -30.680384384, lng: 152.505393583});
 
       expect(location.path).toHaveBeenCalledWith('/-30.680,152.505');
     });

@@ -8,13 +8,13 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'vendor/assets/javascripts/angular.js',
-      'vendor/assets/javascripts/angular-mocks.js',
-      'vendor/assets/javascripts/underscore.js',
-      'app/assets/javascripts/application.js',
-      'app/assets/javascripts/controllers/*.js',
-      'app/assets/javascripts/directives/*.js',
-      'app/assets/javascripts/services/*.js',
+      'vendor/javascripts/angular.js',
+      'vendor/javascripts/angular-mocks.js',
+      'vendor/javascripts/underscore.js',
+      'app/javascripts/application.js',
+      'app/javascripts/controllers/*.js',
+      'app/javascripts/directives/*.js',
+      'app/javascripts/services/*.js',
       'spec/unit/**/*_spec.js'
     ],
 

@@ -4,97 +4,84 @@
 var app = angular.module('am', []);
 
 app.controller('ApplicationController', ['$scope', 'Location', 'SiteCollection', 'URL', function($scope, Location, SiteCollection, URL) {
-  var location, sites, url;
+  Location.setCenter(URL.getCenter(Location.center));
+  SiteCollection.query();
 
-  location = new Location();
-  sites = new SiteCollection();
-  url = new URL();
-
-  location.setCenter(url.getCenter(location.center));
-  sites.query();
-
-  $scope.location = location;
-  $scope.sites = sites;
+  $scope.location = Location;
+  $scope.sites = SiteCollection;
 
   $scope.open = function(site) {
-    sites.open(site);
+    $scope.sites.open(site);
   };
 
   $scope.$watch('location.center', function(center) {
-    url.setCenter(center);
+    URL.setCenter(center);
   });
 }]);
 
 app.factory('URL', ['$location', function($location) {
-  var URL = function() {
-    return this;
-  };
+  return {
+    getCenter: function(defaultCenter) {
+      var match;
 
-  URL.prototype.getCenter = function(defaultCenter) {
-    var match;
+      match = $location.path().match(/^\/([\d\.\-]+),([\d\.\-]+)$/) || [];
+      if (match.length === 3) {
+        return {lat: match[1], lng: match[2]};
+      } else {
+        return defaultCenter;
+      }
+    },
 
-    match = $location.path().match(/^\/([\d\.\-]+),([\d\.\-]+)$/) || [];
-    if (match.length === 3) {
-      return {lat: match[1], lng: match[2]};
-    } else {
-      return defaultCenter;
+    setCenter: function(center) {
+      var lat, lng;
+
+      lat = parseFloat(center.lat);
+      lng = parseFloat(center.lng);
+
+      $location.path('/' + lat.toFixed(3) + ',' + lng.toFixed(3));
     }
-  };
-
-  URL.prototype.setCenter = function(center) {
-    var lat, lng;
-
-    lat = parseFloat(center.lat);
-    lng = parseFloat(center.lng);
-
-    $location.path('/' + lat.toFixed(3) + ',' + lng.toFixed(3));
-  };
-
-  return URL;
+  }
 }]);
 
 app.factory('Location', [function() {
-  var Location = function() {
-    this.center = {lat: -34.397, lng: 150.644};
-    return this;
-  };
+  return {
+    center: {
+      lat: -34.397,
+      lng: 150.655
+    },
 
-  Location.prototype.setCenter = function(center) {
-    this.center = center;
+    setCenter: function(newCenter) {
+      this.center = newCenter;
+    }
   };
-
-  return Location;
 }]);
 
 app.factory('SiteCollection', ['SiteResource', function(SiteResource) {
-  var SiteCollection = function() {
-    this.sites = [];
-    return this;
-  }
+  return {
+    sites: [],
 
-  SiteCollection.prototype.open = function(newSite) {
-    var oldSite = _.find(this.sites, function(oldSite) {
-      return oldSite.open;
-    }) || {};
+    open: function(newSite) {
+      var oldSite = _.find(this.sites, function(oldSite) {
+        return oldSite.open;
+      }) || {};
 
-    oldSite.open = false;
-    newSite.open = true;
+      oldSite.open = false;
+      newSite.open = true;
+    },
+
+    nearby: function(position) {
+      return _.filter(this.sites, function(site) {
+        return site.isNear(position);
+      });
+    },
+
+    query: function() {
+      var _this = this;
+      return SiteResource.query().then(function(sites) {
+        _this.sites = sites;
+      });
+    }
   };
-
-  SiteCollection.prototype.nearby = function(position) {
-    return _.filter(this.sites, function(site) {
-      return site.isNear(position);
-    });
-  };
-
-  SiteCollection.prototype.query = function() {
-    var _this = this;
-    return SiteResource.query().then(function(sites) {
-      _this.sites = sites;
-    });
-  };
-
-  return SiteCollection;
 }]);
 
 app.factory('SiteResource', ['$http', function($http) {

@@ -19,7 +19,9 @@ app.factory('URL', ['$location', function($location) {
       lat = parseFloat(center.lat).toFixed(3);
       lng = parseFloat(center.lng).toFixed(3);
 
-      $location.search(_.extend($location.search(), {lat: lat, lng: lng}));
+      $location
+        .search(_.extend($location.search(), {lat: lat, lng: lng}))
+        .replace();
     },
 
     getId: function() {
@@ -31,11 +33,15 @@ app.factory('URL', ['$location', function($location) {
     },
 
     setId: function(id) {
-      $location.search(_.extend($location.search(), {id: id}));
+      $location
+        .search(_.extend($location.search(), {id: id}))
+        .replace();
     },
 
     unsetId: function() {
-      $location.search(_.omit($location.search(), 'id'));
+      $location
+        .search(_.omit($location.search(), 'id'))
+        .replace();
     }
   }
 }]);

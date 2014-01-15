@@ -10,7 +10,7 @@ describe('URL', function() {
     });
   });
 
-  describe('#getCenter', function() {
+  describe('.getCenter', function() {
     it('is object with lat and lng', function() {
       location.search({lat: '-30.680', lng: '152.505'});
 
@@ -24,7 +24,7 @@ describe('URL', function() {
     });
   });
 
-  describe('#setCenter', function() {
+  describe('.setCenter', function() {
     it('fixes to 3 decimal places', function() {
       URL.setCenter({lat: -30.680384384, lng: 152.505393583});
 
@@ -40,7 +40,7 @@ describe('URL', function() {
     });
   });
 
-  describe('#getId', function() {
+  describe('.getId', function() {
     it('is integer', function() {
       location.search({id: '42'});
 
@@ -54,7 +54,7 @@ describe('URL', function() {
     });
   });
 
-  describe('#unsetId', function() {
+  describe('.unsetId', function() {
     it('persists persists other properties', function() {
       location.search({id: '1', lat: '-30.680', lng: '152.505'});
 

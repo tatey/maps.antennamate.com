@@ -44,6 +44,8 @@ a {
 .pane-header-title {
   margin: 0;
   margin-bottom: 15px;
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
 }
 
 .pane-header-text {
@@ -53,15 +55,15 @@ a {
 
 .pane-header-btn {
   margin-bottom: 15px;
-  background-image: url('<%= image_path("apple.png") %>');
+  background-image: url('<%= image_path("mobile.png") %>');
   background-repeat: no-repeat;
-  background-position: 12px 7px;
-  padding-left: 32px;
+  background-position: 10px center;
+  padding-left: 35px;
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {
   .pane-header-btn {
-    background-image: url('<%= image_path("apple@2x.png") %>');
+    background-image: url('<%= image_path("mobile@2x.png") %>');
     background-size: 16px 16px;
   }
 }

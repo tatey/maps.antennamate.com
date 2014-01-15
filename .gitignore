@@ -2,6 +2,9 @@
 /app/data/*.json
 /app/data/sites/**/*.json
 
+# Ignore sensitive credentials.
+/config/s3_credentials.yml
+
 # Ignore npm.
 /node_modules
 

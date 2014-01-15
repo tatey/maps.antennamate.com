@@ -1,0 +1,9 @@
+# Directories
+destination: 'tmp/deploy'
+
+assets:
+  # Strip whitespace from CSS.
+  css_compressor: 'sass'
+
+  # Minify and strip whtiespace from JavaScript.
+  js_compressor: 'uglifier'

@@ -18,11 +18,21 @@
           <h4 ng-bind="site.name"></h4>
           <p ng-bind="site.area_served"></p>
           <table>
+            <thead>
+              <tr>
+                <th>Callsign</th>
+                <th>Channel</th>
+                <th>Frequency</th>
+                <th>ERP</th>
+                <th>Height</th>
+              </tr>
+            </thead>
             <tbody>
               <tr ng-repeat="transmitter in site.transmitters">
                 <td ng-bind="transmitter.callsign"></td>
                 <td ng-bind="transmitter.channel"></td>
                 <td ng-bind="transmitter.frequency"></td>
+                <td ng-bind="transmitter.maximum_erp | watts"></td>
                 <td ng-bind="transmitter.antenna_height"></td>
               </tr>
             </tbody>

@@ -15,10 +15,11 @@
   <div class="pane-left">
     <div class="google-map" google-map center="location.center">
       <div google-marker click="open(site)" position="site.getPosition()" ng-repeat="site in sites.nearby(location.center)" class="hide">
-        <div google-info-window click="close(site)" open="site.open" class="google-info-window">
+        <div google-info-window click="close(site)" open="site.open" reload="site.transmitters.resolved" class="google-info-window">
           <h4 ng-bind="site.name"></h4>
           <p>Services the area of <span ng-bind="site.area_served"></span></p>
-          <table class="table table-striped">
+          <p class="text-center" ng-if="!site.transmitters.resolved">Loading...</p>
+          <table class="table table-striped" ng-if="site.transmitters.resolved">
             <tbody>
               <tr ng-repeat="transmitter in site.transmitters">
                 <td>

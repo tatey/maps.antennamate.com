@@ -20,9 +20,8 @@ app.factory('SiteCollection', ['SiteResource', function(SiteResource) {
       }) || {};
 
       oldSite.open = false;
-      newSite.queryTransmitters().then(function() {
-        newSite.open = true;
-      });
+      newSite.open = true;
+      newSite.queryTransmitters();
     },
 
     nearby: function(position) {

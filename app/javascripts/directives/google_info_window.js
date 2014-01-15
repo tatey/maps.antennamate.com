@@ -4,7 +4,8 @@ app.directive('googleInfoWindow', ['$timeout', function($timeout) {
   return {
     scope: {
       click: '&',
-      open: '='
+      open: '=',
+      reload: '=',
     },
 
     require: '^googleMarker',
@@ -31,6 +32,13 @@ app.directive('googleInfoWindow', ['$timeout', function($timeout) {
         } else {
           infoWindow.close();
         }
+      });
+
+      scope.$watch('reload', function(value) {
+        if (!value || !scope.open) return;
+
+        infoWindow.setContent(el[0]);
+        infoWindow.open(map, marker);
       });
 
       scope.$on('$destroy', function() {

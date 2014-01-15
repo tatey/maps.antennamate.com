@@ -37,19 +37,13 @@ describe('SiteCollection', function() {
     var newSite, oldSite, deferred, rootScope;
 
     beforeEach(function() {
-      inject(function($injector) {
-        deferred = $injector.get('$q').defer();
-        rootScope = $injector.get('$rootScope');
-      });
-
-      newSite = {open: false, queryTransmitters: function() { return deferred.promise }};
+      newSite = {open: false, queryTransmitters: angular.noop};
       oldSite = {open: true};
+
+      spyOn(newSite, 'queryTransmitters');
 
       SiteCollection.sites = [oldSite, newSite];
       SiteCollection.openSite(newSite);
-
-      deferred.resolve();
-      rootScope.$digest();
     });
 
     it('sets old site as closed', function() {
@@ -58,6 +52,10 @@ describe('SiteCollection', function() {
 
     it('sets new site as open', function() {
       expect(newSite.open).toBeTruthy();
+    });
+
+    it('queries transmitters', function() {
+      expect(newSite.queryTransmitters).toHaveBeenCalled();
     });
   });
 });

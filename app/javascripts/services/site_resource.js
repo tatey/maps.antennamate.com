@@ -4,7 +4,7 @@ app.factory('SiteResource', ['$http', 'TransmitterResource', function($http, Tra
   var _radians;
 
   var SiteResource = function(props) {
-    angular.extend(this, props);
+    angular.extend(this, _.defaults(props, {transmitters: []}));
     return this;
   };
 
@@ -33,6 +33,7 @@ app.factory('SiteResource', ['$http', 'TransmitterResource', function($http, Tra
   SiteResource.prototype.queryTransmitters = function() {
     var _this = this;
     return TransmitterResource.query({site_id: this.id}).then(function(transmitters) {
+      transmitters.resolved = true;
       _this.transmitters = transmitters;
     });
   };

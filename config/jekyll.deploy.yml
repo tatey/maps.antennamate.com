@@ -1,6 +1,9 @@
 # Directories
 destination: 'tmp/deploy'
 
+# Enable Google Analytics.
+google_analytics: true
+
 assets:
   # Strip whitespace from CSS.
   css_compressor: 'sass'

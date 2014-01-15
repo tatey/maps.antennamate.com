@@ -6,6 +6,9 @@ plugins: 'plugins'
 # Don't copy these files into the destination.
 exclude: ['images', 'javascripts', 'stylesheets']
 
+# Disable Google Analytics in development.
+google_analytics: false
+
 # Allow plugins that would be disabled on GitHub
 safe: false
 

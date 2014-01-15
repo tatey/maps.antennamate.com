@@ -4,7 +4,7 @@ destination: 'tmp/site'
 plugins: 'plugins'
 
 # Don't copy these files into the destination.
-exclude: ['javascripts', 'stylesheets']
+exclude: ['images', 'javascripts', 'stylesheets']
 
 # Allow plugins that would be disabled on GitHub
 safe: false
@@ -14,4 +14,4 @@ assets:
   cache: '../tmp/assets'
 
   # Source assets from these directories.
-  sources: ['javascripts', 'stylesheets']
+  sources: ['images', 'javascripts', 'stylesheets']

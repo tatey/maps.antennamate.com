@@ -19,8 +19,12 @@ app.factory('SiteResource', ['$http', 'TransmitterResource', function($http, Tra
     });
   };
 
-  SiteResource.prototype.isNear = function(position) {
-    return (Math.acos(Math.sin(_radians(this.latitude)) * Math.sin(_radians(position.lat)) + Math.cos(_radians(this.latitude)) * Math.cos(_radians(position.lat)) * Math.cos(_radians(position.lng) - _radians(this.longitude))) * 6378100) <= 150000;
+  SiteResource.prototype.distanceToPosition = function(position) {
+    return Math.acos(Math.sin(_radians(this.latitude)) * Math.sin(_radians(position.lat)) + Math.cos(_radians(this.latitude)) * Math.cos(_radians(position.lat)) * Math.cos(_radians(position.lng) - _radians(this.longitude))) * 6378100;
+  };
+
+  SiteResource.prototype.isNearPosition = function(position) {
+    return this.distanceToPosition(position) <= 150000.0;
   };
 
   SiteResource.prototype.getPosition = function() {

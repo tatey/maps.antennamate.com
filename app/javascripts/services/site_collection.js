@@ -25,9 +25,16 @@ app.factory('SiteCollection', ['SiteResource', function(SiteResource) {
     },
 
     nearby: function(position) {
-      return _.filter(this.sites, function(site) {
-        return site.isNear(position);
+      var sites = this.sites;
+
+      sites = _.filter(sites, function(site) {
+        return site.isNearPosition(position);
       });
+      sites = _.sortBy(sites, function(site) {
+        return site.distanceToPosition(position);
+      });
+
+      return sites;
     },
 
     query: function() {

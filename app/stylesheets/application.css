@@ -52,9 +52,26 @@ a {
   text-align: center;
 }
 
-.map {
+.google-map {
   width: 100%;
   height: 100%;
+}
+
+.google-info-window {
+  width: 325px;
+  padding-bottom: 13px;
+}
+
+.google-info-window,
+.google-info-window span {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  font-weight: normal !important;
+}
+
+.google-info-window table {
+  margin-bottom: 0;
+  max-width: none;
+  width: 345px;
 }
 
 .hide {

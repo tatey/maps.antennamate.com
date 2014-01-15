@@ -12,28 +12,31 @@
 </head>
 <body class="panes" ng-app="am" ng-controller="ApplicationController">
   <div class="pane-left">
-    <div class="map" google-map center="location.center">
+    <div class="google-map" google-map center="location.center">
       <div google-marker click="open(site)" position="site.getPosition()" ng-repeat="site in sites.nearby(location.center)" class="hide">
-        <div google-info-window click="close(site)" open="site.open">
+        <div google-info-window click="close(site)" open="site.open" class="google-info-window">
           <h4 ng-bind="site.name"></h4>
-          <p ng-bind="site.area_served"></p>
-          <table>
-            <thead>
-              <tr>
-                <th>Callsign</th>
-                <th>Channel</th>
-                <th>Frequency</th>
-                <th>ERP</th>
-                <th>Height</th>
-              </tr>
-            </thead>
+          <p>Services the area of <span ng-bind="site.area_served"></span></p>
+          <table class="table table-striped">
             <tbody>
               <tr ng-repeat="transmitter in site.transmitters">
-                <td ng-bind="transmitter.callsign"></td>
-                <td ng-bind="transmitter.channel"></td>
-                <td ng-bind="transmitter.frequency"></td>
-                <td ng-bind="transmitter.maximum_erp | watts"></td>
-                <td ng-bind="transmitter.antenna_height"></td>
+                <td>
+                  <span ng-bind="transmitter.callsign"></span>
+                </td>
+                <td>
+                  <span ng-bind="transmitter.channel"></span>
+                </td>
+                <td>
+                  <span ng-bind="transmitter.frequency"></span>
+                  MHz
+                </td>
+                <td>
+                  <span ng-bind="transmitter.maximum_erp | watts"></span>
+                </td>
+                <td>
+                  <span ng-bind="transmitter.antenna_height"></span>
+                  m
+                </td>
               </tr>
             </tbody>
           </table>

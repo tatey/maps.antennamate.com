@@ -29,9 +29,10 @@ app.directive('googleMap', ['$timeout', function($timeout) {
         },
 
         post: function(scope, el, attrs, ctrl) {
-          var map = ctrl.map;
+          var map, handler;
 
-          google.maps.event.addListener(map, 'dragend', function() {
+          map = ctrl.map;
+          handler = function() {
             var center = map.getCenter();
 
             $timeout(function() {
@@ -40,7 +41,10 @@ app.directive('googleMap', ['$timeout', function($timeout) {
                 lng: center.lng()
               };
             });
-          });
+          };
+
+          google.maps.event.addListener(map, 'dragend', handler);
+          google.maps.event.addListener(map, 'zoom_changed', handler);
         }
       };
     }

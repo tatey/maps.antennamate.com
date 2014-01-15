@@ -48,7 +48,7 @@ Then, build and deploy to S3.
     $ script/deploy
 
 The site is built into `tmp/deploy`. The directory is deleted before
-building by the deploy script.
+building by the deploy script. Assets are minified.
 
 Finally, everything is accelorated through Cloudfront for extra low-latency
 goodness. HTTP headers can be configured by editing `config/s3_bucket.yml`.

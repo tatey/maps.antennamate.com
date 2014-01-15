@@ -16,5 +16,9 @@ assets:
   # Decrease build time by caching between compilations.
   cache: '../tmp/assets'
 
+  # Disable gzipping in the asset pipeline.
+  # s3_website takes care of this.
+  gzip: false
+
   # Source assets from these directories.
   sources: ['images', 'javascripts', 'stylesheets']

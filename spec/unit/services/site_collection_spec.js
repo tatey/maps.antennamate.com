@@ -13,19 +13,25 @@ describe('SiteCollection', function() {
     var newSite, oldSite;
 
     beforeEach(function() {
-      newSite = {open: false};
+      newSite = {open: false, queryTransmitters: angular.noop};
       oldSite = {open: true};
+
+      spyOn(newSite, 'queryTransmitters');
 
       SiteCollection.sites = [oldSite, newSite];
       SiteCollection.openSite(newSite);
+    });
+
+    it('sets old site as closed', function() {
+      expect(oldSite.open).toBeFalsy();
     });
 
     it('sets new site as open', function() {
       expect(newSite.open).toBeTruthy();
     });
 
-    it('sets old site as closed', function() {
-      expect(oldSite.open).toBeFalsy();
+    it ('queries transmitters', function() {
+      expect(newSite.queryTransmitters).toHaveBeenCalled();
     });
   });
 });

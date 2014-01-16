@@ -16,6 +16,45 @@ Install application dependencies.
     $ bundle
     $ npm install
 
+## Data
+
+Data is not bundled with this project.
+
+Sample `app/data/sites.json`.
+
+    [{
+      "id":2307,
+      "name": "Artarmon",
+      "latitude":-33.80694444444444,
+      "longitude":151.17944444444444,
+      "area_served":"Sydney",
+      "callsign":"SBS34",
+      "frequency":571.5,
+      "polarisation":"horizontal",
+      "antenna_height":210,
+      "channel":"34",
+      "maximum_erp":200000.0,
+      "signal_type":"digital",
+      "country_code":"au"
+    }]
+
+Sample `app/data/sites/2307/transmitters.json`.
+
+    [{
+      "id":2298,
+      "name":"Artarmon",
+      "latitude":-33.80694444444444,
+      "longitude":151.17944444444444,
+      "area_served":"Sydney",
+      "callsign":"ATN6","frequency":177.5,
+      "polarisation":"horizontal",
+      "antenna_height":194,
+      "channel":"6",
+      "maximum_erp":50000.0,
+      "signal_type":"digital",
+      "country_code":"au"
+    }]
+
 ## Development
 
 First, start the local server and rebuild on change.

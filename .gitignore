@@ -1,6 +1,6 @@
 # Ignore data files. These are too big to version.
 /app/data/*.json
-/app/data/sites/**/*.json
+/app/data/**/*.json
 
 # Ignore sensitive credentials.
 /config/s3_credentials.yml

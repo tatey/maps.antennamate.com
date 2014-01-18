@@ -1,5 +1,9 @@
 {
   "devDependencies": {
     "karma": "~0.10.9"
+  },
+
+  "scripts": {
+    "test": "script/spec"
   }
 }

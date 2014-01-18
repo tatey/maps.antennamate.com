@@ -1,5 +1,7 @@
 # Antenna Mate (AngularJS)
 
+Try it out, [http://maps.antennamate.com](http://maps.antennamate.com).
+
 Find and link to terrestrial television transmitters in your browser.
 This is the counterpart project to [Antenna Mate for iOS](http://antennamate.com).
 
@@ -18,42 +20,12 @@ Install application dependencies.
 
 ## Data
 
-Data is not bundled with this project.
+Data is not bundled with this project. You can download a sample set and copy
+it into `app/data`.
 
-Sample `app/data/sites.json`.
-
-    [{
-      "id":2307,
-      "name": "Artarmon",
-      "latitude":-33.80694444444444,
-      "longitude":151.17944444444444,
-      "area_served":"Sydney",
-      "callsign":"SBS34",
-      "frequency":571.5,
-      "polarisation":"horizontal",
-      "antenna_height":210,
-      "channel":"34",
-      "maximum_erp":200000.0,
-      "signal_type":"digital",
-      "country_code":"au"
-    }]
-
-Sample `app/data/sites/2307/transmitters.json`.
-
-    [{
-      "id":2298,
-      "name":"Artarmon",
-      "latitude":-33.80694444444444,
-      "longitude":151.17944444444444,
-      "area_served":"Sydney",
-      "callsign":"ATN6","frequency":177.5,
-      "polarisation":"horizontal",
-      "antenna_height":194,
-      "channel":"6",
-      "maximum_erp":50000.0,
-      "signal_type":"digital",
-      "country_code":"au"
-    }]
+    $ curl -o app/data/sites.json --compressed http://maps.antennamate.com/data/sites.json
+    $ mkdir -p app/data/sites/2307
+    $ curl -o app/data/sites/2307/transmitters.json --compressed http://maps.antennamate.com/data/sites/2307/transmitters.json
 
 ## Development
 
@@ -91,3 +63,12 @@ building by the deploy script. Assets are minified.
 
 Finally, everything is accelorated through Cloudfront for extra low-latency
 goodness. HTTP headers can be configured by editing `config/s3_bucket.yml`.
+
+## Browser Compatibility
+
+This project has been verified to work in the following browsers:
+
+* Chrome
+* Safari (OS X and iOS)
+* Firefox
+* IE9,10,11

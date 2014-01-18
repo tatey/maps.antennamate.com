@@ -1,5 +1,7 @@
 # Antenna Mate (AngularJS)
 
+[![Build Status](https://travis-ci.org/tatey/maps.antennamate.com.png?branch=master)](https://travis-ci.org/tatey/maps.antennamate.com)
+
 Try it out, [http://maps.antennamate.com](http://maps.antennamate.com).
 
 Find and link to terrestrial television transmitters in your browser.

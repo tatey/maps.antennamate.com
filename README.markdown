@@ -72,3 +72,7 @@ This project has been verified to work in the following browsers:
 * Safari (OS X and iOS)
 * Firefox
 * IE9,10,11
+
+## Copyright
+
+Copyright (c) 2014 Tate Johnson. Distributed under the MIT License. See LICENSE.

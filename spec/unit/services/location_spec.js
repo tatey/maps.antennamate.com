@@ -1,16 +1,17 @@
 describe('Google location', function() {
   var location;
 
-  // Hobart
-  var thislat = -42.8790;
-  var thislng = 147.3291;
+  var hobart = {
+    lat: -42.8790,
+    lng: 147.3291
+  }
 
   beforeEach(function() {
     module('am');
     window.google.loader = {
       ClientLocation : {
-        latitude: thislat,
-        longitude: thislng
+        latitude: hobart.lat,
+        longitude: hobart.lng
       }
     };
     inject(function($injector) {
@@ -21,7 +22,7 @@ describe('Google location', function() {
   describe('googleLocation', function() {
 
     it('uses clientLocation', function() {
-      expect(location.center).toEqual({lat: thislat, lng: thislng});
+      expect(location.center).toEqual({lat: hobart.lat, lng: hobart.lng});
     });
   });
 });
@@ -41,6 +42,19 @@ describe('Default location', function() {
     it('specifies a rational default', function() {
       // This is the default of Sydney, hard-coded into the Location class.
       expect(location.center).toEqual({lat: -33.819, lng: 150.586});
+    });
+  });
+
+  describe('.setCenter', function() {
+    it('sets correctly', function() {
+      var london = {
+        lat: 51.4983,
+        lng: -0.1188
+      }
+
+      location.setCenter(london);
+      // This is the default of Sydney, hard-coded into the Location class.
+      expect(location.center).toEqual({lat: london.lat, lng: london.lng});
     });
   });
 });

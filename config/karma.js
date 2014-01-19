@@ -10,6 +10,7 @@ module.exports = function(config) {
     files: [
       'vendor/javascripts/angular.js',
       'vendor/javascripts/angular-mocks.js',
+      'vendor/javascripts/google.loader-mocks.js',
       'vendor/javascripts/underscore.js',
       'app/javascripts/application.js',
       'app/javascripts/controllers/*.js',

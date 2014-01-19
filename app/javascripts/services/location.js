@@ -1,26 +1,25 @@
 var app = angular.module('am');
 
-app.factory('Location', [function() {
-  var center;
-
-  // Where possible, use Google's IP-based geolocation
-  if(window.google && google.loader && google.loader.ClientLocation && google.loader.ClientLocation.latitude){
-    center = {
-      lat: google.loader.ClientLocation.latitude,
-      lng: google.loader.ClientLocation.longitude
-    };
-  } else {
-    center = {
-      lat: -33.819,
-      lng: 150.586 // Sydney
-    };
+app.factory('Location', ['googleLocation',function(googleLocation) {
+  var Location = {}
+  /**
+   * setCenter - Set a new location
+   * @param {Object} newCenter Object containing lat and lng floats.
+   */
+  Location.setCenter = function(newCenter) {
+    this.center = newCenter;
   }
 
-  return {
-    center: center,
+  if(googleLocation.center){
+    // Attempt to use the googleLocation.
+    Location.setCenter(googleLocation.center);
+  } else {
+    // Set a default if we don't have a location from Google.
+    Location.setCenter({
+      lat: -33.819,
+      lng: 150.586 // Sydney
+    });
+  }
 
-    setCenter: function(newCenter) {
-      this.center = newCenter;
-    }
-  };
+  return Location;
 }]);

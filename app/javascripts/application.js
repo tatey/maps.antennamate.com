@@ -24,12 +24,15 @@
   angular.module('am', []);
 
   // Since we have Google Loader, load Google Maps with it instead of hard-coding
-  // in the document.
-  google.load("maps", "3", {
-    other_params:'sensor=false',
-    callback: function(){
-      // Initialize our app once it's done.
-      angular.bootstrap(document.querySelector('body'), ['am']);
-    }
+  // in the document. This races DOM Ready, so wait until the DOM's settled.
+  angular.element(document).ready(function () {
+    // Then load maps.
+    google.load("maps", "3", {
+      other_params:'sensor=false',
+      callback: function(){
+        // And initialize our app once it's done.
+        angular.bootstrap(document.querySelector('body'), ['am']);
+      }
+    });
   });
-})()
+})();

@@ -6,4 +6,33 @@
 //= require_tree ./filters
 //= require_tree ./services
 
-angular.module('am', []);
+
+(function(){
+  // Before we start, let's make sure we're using a modern browser.
+  var FALLBACK_MESSAGE = '<p>Your browser is too old to support this website. Please '+
+    '<a href="http://browsehappy.com/">upgrade your browser</a> or install the app.</p>';
+
+  // Angular requires JSON, this seems to catch most browsers. We could add more
+  // tests here as required.
+  if(!window.JSON){
+  	window.onload = function(){
+  		document.getElementById('messages').innerHTML = FALLBACK_MESSAGE;
+  	}
+    return;
+  }
+
+  angular.module('am', []);
+
+  // Since we have Google Loader, load Google Maps with it instead of hard-coding
+  // in the document. This races DOM Ready, so wait until the DOM's settled.
+  angular.element(document).ready(function () {
+    // Then load maps.
+    google.load("maps", "3", {
+      other_params:'sensor=false',
+      callback: function(){
+        // And initialize our app once it's done.
+        angular.bootstrap(document.querySelector('body'), ['am']);
+      }
+    });
+  });
+})();

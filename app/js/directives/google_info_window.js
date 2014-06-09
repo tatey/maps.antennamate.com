@@ -24,7 +24,7 @@ app.directive('googleInfoWindow', ['$timeout', function($timeout) {
       });
 
       scope.$watch('open', function(value) {
-        if (typeof value === 'undefined') return;
+        if (typeof value === 'undefined') { return; }
 
         if (value) {
           infoWindow.setContent(el[0]);
@@ -35,7 +35,7 @@ app.directive('googleInfoWindow', ['$timeout', function($timeout) {
       });
 
       scope.$watch('reload', function(value) {
-        if (!value || !scope.open) return;
+        if (!value || !scope.open) { return; }
 
         infoWindow.setContent(el[0]);
         infoWindow.open(map, marker);

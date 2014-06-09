@@ -28,7 +28,7 @@ app.factory('URL', ['$location', function($location) {
       var id = $location.search().id;
 
       if (id) {
-        return parseInt(id);
+        return parseInt(id, 10);
       }
     },
 
@@ -43,5 +43,5 @@ app.factory('URL', ['$location', function($location) {
         .search(_.omit($location.search(), 'id'))
         .replace();
     }
-  }
+  };
 }]);

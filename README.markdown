@@ -1,4 +1,4 @@
-# Antenna Mate (AngularJS)
+# Antenna Mate (AngularJS + Lineman)
 
 [![Build Status](https://travis-ci.org/tatey/maps.antennamate.com.png?branch=master)](https://travis-ci.org/tatey/maps.antennamate.com)
 
@@ -9,62 +9,37 @@ This is the counterpart project to [Antenna Mate for iOS](http://antennamate.com
 
 ## System Dependencies
 
-* Ruby 2 (Jekyll)
-* Node.js 0.10 (Karma)
-* PhanthomJS (Karma)
+* Node.js 0.10
+* Chrome (Specs)
 
 ## Setup
 
-Install application dependencies.
+Install [Lineman](http://www.linemanjs.com/).
 
-    $ bundle
-    $ npm install
+    $ npm install -g lineman
 
-## Data
-
-Data is not bundled with this project. You can download a sample set and copy
-it into `app/data`.
-
-    $ curl -o app/data/sites.json --compressed http://maps.antennamate.com/data/sites.json
-    $ mkdir -p app/data/sites/2307
-    $ curl -o app/data/sites/2307/transmitters.json --compressed http://maps.antennamate.com/data/sites/2307/transmitters.json
+Lineman is a command-line utility that is hyper-focused on helping web
+developers build first-class JavaScript web applications.
 
 ## Development
 
-First, start the local server and rebuild on change.
+First, start the local server and file watcher.
 
-    $ script/serve
+    $ lineman run
 
 Then, open in your browser.
 
-    $ open http://localhost:4000
-
-The site is built into `tmp/site`.
+    $ open http://localhost:8000
 
 ## Testing
 
 Run the entire test suite.
 
-    $ script/spec
-
-Specs are located in `spec/unit`.
+    $ lineman spec
 
 ## Deploying
 
-First, configure S3 bucket credentials by editing
-`config/s3_credentials.yml`.
-
-    $ cp config/s3_credentials.dist.yml config/s3_credentials.yml.
-
-Then, build and deploy to S3.
-
-    $ script/deploy
-
-The site is built into `tmp/deploy`. The directory is deleted before
-building by the deploy script. Assets are minified.
-
-Finally, everything is accelerated through Cloudfront for extra low-latency
-goodness. HTTP headers can be configured by editing `config/s3_bucket.yml`.
+TODO
 
 ## Browser Compatibility
 

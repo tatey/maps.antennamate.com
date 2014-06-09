@@ -1,5 +1,3 @@
-/*= require bootstrap */
-
 html,
 body {
   height: 100%;
@@ -55,7 +53,7 @@ a {
 
 .pane-header-btn {
   margin-bottom: 15px;
-  background-image: url('<%= image_path("mobile.png") %>');
+  background-image: url('/img/mobile.png');
   background-repeat: no-repeat;
   background-position: 10px center;
   padding-left: 35px;
@@ -63,7 +61,7 @@ a {
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2) {
   .pane-header-btn {
-    background-image: url('<%= image_path("mobile@2x.png") %>');
+    background-image: url('/img/mobile@2x.png');
     background-size: 16px 16px;
   }
 }

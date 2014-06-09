@@ -1,9 +1,0 @@
-#!/bin/sh
-#
-# Deploy
-#
-# Build the site and deploy to S3.
-
-rm -Rf tmp/deploy &&
-  bin/jekyll build --config config/jekyll.yml,config/jekyll.deploy.yml &&
-  bin/s3 tmp/deploy config/s3_bucket.yml,config/s3_credentials.yml

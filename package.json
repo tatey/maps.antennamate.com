@@ -1,9 +1,16 @@
 {
+  "name": "maps.antennamate.com",
+  "description": "Find and link to terrestrial television transmitters in your browser.",
+  "homepage": "http://maps.antennamate.com",
+  "version": "2014.06.09",
+  "private": true,
+  "author": "Tate Johnson",
+  "license" : "MIT",
   "devDependencies": {
-    "karma": "~0.10.9"
+    "lineman": "~0.32.2"
   },
-
   "scripts": {
-    "test": "script/spec"
+    "start": "lineman run",
+    "test": "lineman spec-ci"
   }
 }

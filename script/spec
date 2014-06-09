@@ -1,5 +1,0 @@
-#!/bin/sh
-#
-# Run the entire test suite.
-
-bin/karma start config/karma.js

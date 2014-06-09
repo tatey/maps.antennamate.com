@@ -1,7 +1,0 @@
-#!/bin/sh
-#
-# Jekyll
-#
-# Start the local server and rebuild on change.
-
-bin/jekyll serve --config config/jekyll.yml --watch $@

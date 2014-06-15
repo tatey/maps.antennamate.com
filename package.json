@@ -7,8 +7,8 @@
   "author": "Tate Johnson",
   "license": "MIT",
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-aws": "^0.3.0",
+    "grunt-aws-s3": "^0.8.6",
+    "grunt-contrib-compress": "^0.7.0",
     "lineman": "~0.32.2"
   },
   "scripts": {

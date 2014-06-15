@@ -52,7 +52,7 @@ Then, build and deploy to AWS S3.
 
     $ lineman grunt deploy
 
-Finally, everything is accelerated through Cloudfront for extra low-latency
+Finally, everything is accelerated through AWS Cloudfront for extra low-latency
 goodness. HTTP headers are configured by editing `tasks/deploy.js`.
 
 ## Browser Compatibility

@@ -14,9 +14,13 @@ This is the counterpart project to [Antenna Mate for iOS](http://antennamate.com
 
 ## Setup
 
-Install [Lineman](http://www.linemanjs.com/).
+First, install [Lineman](http://www.linemanjs.com/).
 
     $ npm install -g lineman
+
+Then, install the application's dependencies.
+
+    $ npm install
 
 Lineman is a command-line utility that is hyper-focused on helping web
 developers build first-class JavaScript web applications.
@@ -39,7 +43,17 @@ Run the entire test suite.
 
 ## Deploying
 
-TODO
+First, configure AWS S3 credentials by copying the distribution file and
+editing the the contents.
+
+    $ cp config/credentials.dist.json config/credentials.json
+
+Then, build and deploy to AWS S3.
+
+    $ lineman grunt deploy
+
+Finally, everything is accelerated through Cloudfront for extra low-latency
+goodness. HTTP headers are configured by editing `tasks/deploy.js`.
 
 ## Browser Compatibility
 

@@ -4,6 +4,7 @@
 /node_modules
 
 /app/static/data
+/config/credentials.json
 /dist
 /generated
 
